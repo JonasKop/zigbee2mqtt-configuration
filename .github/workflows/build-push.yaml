@@ -7,9 +7,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  package_helm:
+  build:
     runs-on: ubuntu-22.04
-    name: Package helm chart
+    name: Build and package
     permissions:
       packages: write
     steps:
