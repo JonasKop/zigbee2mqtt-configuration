@@ -1,0 +1,10 @@
+global:
+  containerRegistry: ghcr.io
+
+image:
+  registry: ""
+  repository: jonaskop/zigbee2mqtt
+  tag: ""
+
+# Node to run the pod on
+nodeName: ""
