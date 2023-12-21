@@ -23,7 +23,6 @@ spec:
           securityContext:
             runAsUser: 1000
             runAsGroup: 1000
-            privileged: true
           image: {{ include "zigbee2mqtt.image" . }}
           volumeMounts:
             - name: data
@@ -34,6 +33,12 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "50m"
+            limits:
+              memory: "200Mi"
       volumes:
         - name: data
           persistentVolumeClaim:
