@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "zigbee2mqtt.fullname" . }}
+  annotations:
+    reloader.stakater.com/auto: "true"
+  labels:
+    {{- include "zigbee2mqtt.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "zigbee2mqtt.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "zigbee2mqtt.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.nodeName }}
+      nodeName: {{ . }}
+      {{- end }}
+      containers:
+        - name: zigbee2mqtt
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+            privileged: true
+          image: {{ include "zigbee2mqtt.image" . }}
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+            - name: ttyacm
+              mountPath: /dev/ttyACM0
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: {{ include "zigbee2mqtt.fullname" . }}-data
+        - name: ttyacm
+          hostPath:
+            path: /dev/ttyACM0
+      securityContext:
+        fsGroup: 1000
