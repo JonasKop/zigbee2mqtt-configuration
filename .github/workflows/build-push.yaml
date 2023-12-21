@@ -12,6 +12,7 @@ jobs:
     name: Package helm chart
     permissions:
       packages: write
+      contents: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v3
