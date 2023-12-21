@@ -1,9 +1,10 @@
-name: Build and push Zigbee2MQTT1
+name: Build and push Zigbee2MQTT
 
 on:
   push:
-    # paths-ignore:
-    #   - "README.md"
+    paths:
+      - "**"
+      - "!README.md"
   workflow_dispatch:
 
 jobs:
