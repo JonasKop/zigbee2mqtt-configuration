@@ -14,6 +14,7 @@ jobs:
     permissions:
       packages: write
       contents: write
+      actions: write
     steps:
       - name: Checkout source code
         uses: actions/checkout@v4
@@ -43,3 +44,9 @@ jobs:
         uses: jonaskop/custom-github-actions/set-version@main
         with:
           version: ${{ env.VERSION }}
+
+      - name: Trigger release creation workflow
+        if: github.ref_name == 'main'
+        run: gh workflow run release.yaml --ref "$VERSION"
+        env:
+          GH_TOKEN: ${{ github.token }}
