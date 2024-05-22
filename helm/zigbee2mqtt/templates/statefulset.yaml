@@ -82,6 +82,12 @@ spec:
             runAsUser: 1000
             runAsGroup: 1000
           image: {{ include "zigbee2mqtt.image" . }}
+          resources:
+            requests:
+              memory: "200Mi"
+              cpu: "20m"
+            limits:
+              memory: "200Mi"
           volumeMounts:
             - name: data
               mountPath: /app/data
