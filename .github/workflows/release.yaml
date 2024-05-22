@@ -1,0 +1,20 @@
+name: Create release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Changelog
+        uses: jonaskop/custom-github-actions/create-release@main
+        with:
+          charts: "zigbee2mqtt"

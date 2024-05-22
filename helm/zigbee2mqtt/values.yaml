@@ -1,0 +1,13 @@
+global:
+  containerRegistry: docker.io
+
+image:
+  registry: ""
+  repository: koenkk/zigbee2mqtt
+  tag: "1.37.1"
+
+config:
+  mqtt:
+    server: mqtt://mosquitto.mosquitto.svc.cluster.local
+  serial:
+    adapter: deconz

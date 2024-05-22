@@ -1,0 +1,45 @@
+name: Build and push Zigbee2mqtt
+
+on:
+  push:
+    paths:
+      - "**"
+      - "!README.md"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    name: Build and package
+    permissions:
+      packages: write
+      contents: write
+      actions: write
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Get version
+        id: get_version
+        uses: jonaskop/custom-github-actions/get-version@main
+
+      - name: Package Helm chart
+        uses: jonaskop/custom-github-actions/package-helm-chart@main
+        with:
+          chart: helm/zigbee2mqtt
+          version: ${{ env.VERSION }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set version
+        if: github.ref_name == 'main'
+        uses: jonaskop/custom-github-actions/set-version@main
+        with:
+          version: ${{ env.VERSION }}
+
+      - name: Trigger release creation workflow
+        if: github.ref_name == 'main'
+        run: gh workflow run release.yaml --ref "$VERSION"
+        env:
+          GH_TOKEN: ${{ github.token }}
